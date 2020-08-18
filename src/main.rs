@@ -1,3 +1,8 @@
+use structopt::StructOpt;
+
+mod conf;
+
 fn main() {
-    println!("MKS CLI");
+    let opt = conf::CliOptions::from_args();
+    println!("{:#?}", opt);
 }
