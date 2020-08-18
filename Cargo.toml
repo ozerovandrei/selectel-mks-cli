@@ -1,0 +1,18 @@
+[package]
+authors = ["Andrei Ozerov <andrei.ozerov92@gmail.com>"]
+categories = ["cli"]
+description = "CLI for the Selectel Managed Kubernetes Service."
+readme = "README.md"
+edition = "2018"
+homepage = "https://github.com/ozerovandrei/selectel-mks-cli"
+keywords = ["cli", "selectel", "mks", "kubernetes"]
+license = "MIT OR Apache-2.0"
+name = "selectel-mks-cli"
+repository = "https://github.com/ozerovandrei/selectel-mks-cli.git"
+version = "0.1.0"
+
+[[bin]]
+name = "mks"
+path = "src/main.rs"
+
+[dependencies]
