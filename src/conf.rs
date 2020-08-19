@@ -2,29 +2,29 @@ use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
 #[structopt(name = "mks")]
-pub struct CliOptions {
+pub(crate) struct CliOptions {
     #[structopt(short, long)]
     /// Activate debug mode
-    debug: bool,
+    pub(crate) debug: bool,
 
     #[structopt(short, long)]
     /// Activate verbose mode
-    verbose: bool,
+    pub(crate) verbose: bool,
 
-    #[structopt(long, env = "MKS_TOKEN")]
+    #[structopt(long, env = "MKS_TOKEN", hide_env_values = true)]
     /// MKS project-scoped token
-    mks_token: String,
+    pub(crate) mks_token: String,
 
-    #[structopt(long, env = "MKS_ENDPOINT")]
+    #[structopt(long, env = "MKS_ENDPOINT", hide_env_values = true)]
     /// MKS endpoint
-    mks_endpoint: String,
+    pub(crate) mks_endpoint: String,
 
     #[structopt(subcommand)]
-    resource: Resource,
+    pub(crate) resource: Resource,
 }
 
 #[derive(Debug, StructOpt)]
-enum Resource {
+pub(crate) enum Resource {
     /// Cluster commands
     Cluster(Cluster),
 
@@ -42,25 +42,37 @@ enum Resource {
 }
 
 #[derive(Debug, StructOpt)]
-struct Cluster {
+pub(crate) struct Cluster {
     #[structopt(subcommand)]
-    command: ClusterCommand,
+    pub(crate) command: ClusterCommand,
 }
 
 #[derive(Debug, StructOpt)]
-enum ClusterCommand {
+pub(crate) enum ClusterCommand {
     /// Get cluster
     Get {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+
         /// Cluster identifier
         #[structopt(name = "cluster-id")]
         id: String,
     },
 
     /// List all clusters
-    List,
+    List {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+    },
 
     /// Create a new cluster
     Create {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+
         /// Cluster name
         #[structopt(long)]
         name: String,
@@ -110,27 +122,35 @@ enum ClusterCommand {
 }
 
 #[derive(Debug, StructOpt)]
-struct Kubeversion {
+pub(crate) struct Kubeversion {
     #[structopt(subcommand)]
-    command: KubeversionCommand,
+    pub(crate) command: KubeversionCommand,
 }
 
 #[derive(Debug, StructOpt)]
-enum KubeversionCommand {
+pub(crate) enum KubeversionCommand {
     /// List all available Kubernetes versions
-    List,
+    List {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+    },
 }
 
 #[derive(Debug, StructOpt)]
-struct Node {
+pub(crate) struct Node {
     #[structopt(subcommand)]
-    command: NodeCommand,
+    pub(crate) command: NodeCommand,
 }
 
 #[derive(Debug, StructOpt)]
-enum NodeCommand {
+pub(crate) enum NodeCommand {
     /// List cluster nodes in the nodegroup
     List {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+
         /// Cluster identifier
         #[structopt(long)]
         cluster_id: String,
@@ -157,15 +177,19 @@ enum NodeCommand {
 }
 
 #[derive(Debug, StructOpt)]
-struct Nodegroup {
+pub(crate) struct Nodegroup {
     #[structopt(subcommand)]
-    command: NodegroupCommand,
+    pub(crate) command: NodegroupCommand,
 }
 
 #[derive(Debug, StructOpt)]
-enum NodegroupCommand {
+pub(crate) enum NodegroupCommand {
     /// List cluster nodegroups
     List {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+
         /// Cluster identifier
         #[structopt(long)]
         cluster: String,
@@ -173,6 +197,10 @@ enum NodegroupCommand {
 
     /// Get cluster nodegroup
     Get {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+
         /// Cluster identifier
         #[structopt(long)]
         cluster: String,
@@ -184,6 +212,10 @@ enum NodegroupCommand {
 
     /// Create a new nodegroup
     Create {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+
         /// Cluster identifier
         #[structopt(long)]
         cluster: String,
@@ -257,15 +289,19 @@ enum NodegroupCommand {
 }
 
 #[derive(Debug, StructOpt)]
-struct Task {
+pub(crate) struct Task {
     #[structopt(subcommand)]
-    command: TaskCommand,
+    pub(crate) command: TaskCommand,
 }
 
 #[derive(Debug, StructOpt)]
-enum TaskCommand {
+pub(crate) enum TaskCommand {
     /// List cluster tasks
     List {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+
         /// Cluster identifier
         #[structopt(long)]
         cluster: String,
@@ -273,6 +309,10 @@ enum TaskCommand {
 
     /// Get cluster task
     Get {
+        #[structopt(default_value = "table", short, long)]
+        /// Output format, can be either of table or json
+        output: String,
+
         /// Cluster identifier
         #[structopt(long)]
         cluster: String,
