@@ -760,6 +760,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "selectel-mks",
+ "serde",
  "serde_json",
  "structopt",
  "term-table",
