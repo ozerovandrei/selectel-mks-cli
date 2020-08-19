@@ -304,7 +304,7 @@ pub(crate) enum TaskCommand {
 
         /// Cluster identifier
         #[structopt(long)]
-        cluster: String,
+        cluster_id: String,
     },
 
     /// Get cluster task
@@ -315,7 +315,7 @@ pub(crate) enum TaskCommand {
 
         /// Cluster identifier
         #[structopt(long)]
-        cluster: String,
+        cluster_id: String,
 
         /// Task identifier
         #[structopt(name = "task-id")]
