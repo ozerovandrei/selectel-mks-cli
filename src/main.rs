@@ -7,6 +7,8 @@ mod conf;
 mod kubeversion;
 mod task;
 
+pub(crate) mod json;
+
 fn main() -> Result<()> {
     let cli_opts = conf::CliOptions::from_args();
 
@@ -14,13 +16,26 @@ fn main() -> Result<()> {
         .context("Failed to initialize MKS client")?;
 
     match cli_opts.resource {
+        // kubeversion list
         conf::Resource::Kubeversion(conf::Kubeversion {
             command: conf::KubeversionCommand::List { output },
         }) => kubeversion::list(&client, &output)?,
 
+        // task get
         conf::Resource::Task(conf::Task {
-            command: conf::TaskCommand::List { cluster_id, output },
-        }) => task::list(&client, &cluster_id, &output)?,
+            command:
+                conf::TaskCommand::Get {
+                    output,
+                    cluster_id,
+                    task_id,
+                },
+        }) => task::get(&client, &output, &cluster_id, &task_id)?,
+
+        // task list
+        conf::Resource::Task(conf::Task {
+            command: conf::TaskCommand::List { output, cluster_id },
+        }) => task::list(&client, &output, &cluster_id)?,
+
         _ => bail!("Unknown command"),
     };
 
