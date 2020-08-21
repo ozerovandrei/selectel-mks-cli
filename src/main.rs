@@ -69,6 +69,11 @@ fn main() -> Result<()> {
             cluster::create(&client, &output, opts)?
         }
 
+        // cluster delete
+        conf::Resource::Cluster(conf::Cluster {
+            command: conf::ClusterCommand::Delete { cluster_id },
+        }) => cluster::delete(&client, &cluster_id)?,
+
         // kubeversion list
         conf::Resource::Kubeversion(conf::Kubeversion {
             command: conf::KubeversionCommand::List { output },

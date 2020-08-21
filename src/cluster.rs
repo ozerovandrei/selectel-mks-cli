@@ -194,3 +194,11 @@ pub(crate) fn create(
 
     Ok(())
 }
+
+pub(crate) fn delete(client: &Client, cluster_id: &str) -> Result<()> {
+    client
+        .delete_cluster(cluster_id)
+        .context("Failed to delete cluster")?;
+
+    Ok(())
+}

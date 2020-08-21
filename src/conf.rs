@@ -117,7 +117,7 @@ pub(crate) enum ClusterCommand {
     Delete {
         /// Cluster identifier
         #[structopt(name = "cluster-id")]
-        id: String,
+        cluster_id: String,
     },
 }
 
