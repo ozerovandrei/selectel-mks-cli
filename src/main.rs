@@ -24,6 +24,11 @@ fn main() -> Result<()> {
             command: conf::ClusterCommand::Get { output, cluster_id },
         }) => cluster::get(&client, &output, &cluster_id)?,
 
+        // cluster list
+        conf::Resource::Cluster(conf::Cluster {
+            command: conf::ClusterCommand::List { output },
+        }) => cluster::list(&client, &output)?,
+
         // cluster create
         conf::Resource::Cluster(conf::Cluster {
             command:

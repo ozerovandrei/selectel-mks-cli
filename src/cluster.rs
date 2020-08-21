@@ -2,7 +2,7 @@ use anyhow::{bail, Context, Result};
 use selectel_mks::cluster;
 use selectel_mks::Client;
 use term_table::row::Row;
-use term_table::table_cell::TableCell;
+use term_table::table_cell::{Alignment, TableCell};
 use term_table::{Table, TableStyle};
 
 use crate::json;
@@ -136,6 +136,43 @@ fn get_print_table(cluster: &cluster::schemas::Cluster) {
         TableCell::new("zonal"),
         TableCell::new(&cluster.zonal),
     ]));
+
+    println!("{}", table.render());
+}
+
+pub(crate) fn list(client: &Client, output: &str) -> Result<()> {
+    let clusters = client.list_clusters().context("Failed to list clusters")?;
+
+    match output {
+        "table" => list_print_table(&clusters),
+        "json" => json::print_json(clusters)?,
+        _ => bail!("Unknown output format"),
+    };
+
+    Ok(())
+}
+
+fn list_print_table(clusters: &[cluster::schemas::Cluster]) {
+    let mut table = Table::new();
+    table.style = TableStyle::simple();
+
+    table.add_row(Row::new(vec![
+        TableCell::new_with_alignment("id", 1, Alignment::Center),
+        TableCell::new_with_alignment("name", 1, Alignment::Center),
+        TableCell::new_with_alignment("kube_version", 1, Alignment::Center),
+        TableCell::new_with_alignment("kube_api_ip", 1, Alignment::Center),
+        TableCell::new_with_alignment("status", 1, Alignment::Center),
+    ]));
+
+    for cluster in clusters.iter() {
+        table.add_row(Row::new(vec![
+            TableCell::new(&cluster.id),
+            TableCell::new(&cluster.name),
+            TableCell::new(&cluster.kube_version),
+            TableCell::new(&cluster.kube_api_ip),
+            TableCell::new(&cluster.status),
+        ]));
+    }
 
     println!("{}", table.render());
 }
