@@ -4,6 +4,8 @@ use selectel_mks::Client;
 use structopt::StructOpt;
 
 mod conf;
+
+mod cluster;
 mod kubeversion;
 mod task;
 
@@ -16,6 +18,11 @@ fn main() -> Result<()> {
         .context("Failed to initialize MKS client")?;
 
     match cli_opts.resource {
+        // cluster get
+        conf::Resource::Cluster(conf::Cluster {
+            command: conf::ClusterCommand::Get { output, cluster_id },
+        }) => cluster::get(&client, &output, &cluster_id)?,
+
         // kubeversion list
         conf::Resource::Kubeversion(conf::Kubeversion {
             command: conf::KubeversionCommand::List { output },
