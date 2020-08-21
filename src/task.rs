@@ -21,40 +21,36 @@ pub(crate) fn get(client: &Client, output: &str, cluster_id: &str, task_id: &str
     Ok(())
 }
 
-fn new_table_with_headers<'a>() -> Table<'a> {
-    let mut table = Table::new();
-    table.style = TableStyle::simple();
-
-    table.add_row(Row::new(vec![
-        TableCell::new_with_alignment("id", 1, Alignment::Center),
-        TableCell::new_with_alignment("started_at", 1, Alignment::Center),
-        TableCell::new_with_alignment("updated_at", 1, Alignment::Center),
-        TableCell::new_with_alignment("type", 1, Alignment::Center),
-        TableCell::new_with_alignment("status", 1, Alignment::Center),
-    ]));
-
-    table
-}
-
-fn add_task_table_row(table: &mut Table, task: &task::schemas::Task) {
+fn get_print_table(task: &task::schemas::Task) {
     let updated_at = match &task.updated_at {
         Some(time) => time.to_rfc3339(),
         None => String::new(),
     };
 
+    let mut table = Table::new();
+    table.style = TableStyle::simple();
+    table.separate_rows = false;
+
     table.add_row(Row::new(vec![
+        TableCell::new("id"),
         TableCell::new(&task.id),
+    ]));
+    table.add_row(Row::new(vec![
+        TableCell::new("started_at"),
         TableCell::new(&task.started_at.to_rfc3339()),
+    ]));
+    table.add_row(Row::new(vec![
+        TableCell::new("updated_at"),
         TableCell::new(updated_at),
+    ]));
+    table.add_row(Row::new(vec![
+        TableCell::new("type"),
         TableCell::new(&task.task_type),
+    ]));
+    table.add_row(Row::new(vec![
+        TableCell::new("status"),
         TableCell::new(&task.status),
     ]));
-}
-
-fn get_print_table(task: &task::schemas::Task) {
-    let mut table = new_table_with_headers();
-
-    add_task_table_row(&mut table, task);
 
     println!("{}", table.render());
 }
@@ -74,10 +70,30 @@ pub(crate) fn list(client: &Client, output: &str, cluster_id: &str) -> Result<()
 }
 
 fn list_print_table(tasks: &[task::schemas::Task]) {
-    let mut table = new_table_with_headers();
+    let mut table = Table::new();
+    table.style = TableStyle::simple();
+
+    table.add_row(Row::new(vec![
+        TableCell::new_with_alignment("id", 1, Alignment::Center),
+        TableCell::new_with_alignment("started_at", 1, Alignment::Center),
+        TableCell::new_with_alignment("updated_at", 1, Alignment::Center),
+        TableCell::new_with_alignment("type", 1, Alignment::Center),
+        TableCell::new_with_alignment("status", 1, Alignment::Center),
+    ]));
 
     for task in tasks.iter() {
-        add_task_table_row(&mut table, task);
+        let updated_at = match &task.updated_at {
+            Some(time) => time.to_rfc3339(),
+            None => String::new(),
+        };
+
+        table.add_row(Row::new(vec![
+            TableCell::new(&task.id),
+            TableCell::new(&task.started_at.to_rfc3339()),
+            TableCell::new(updated_at),
+            TableCell::new(&task.task_type),
+            TableCell::new(&task.status),
+        ]));
     }
 
     println!("{}", table.render());
