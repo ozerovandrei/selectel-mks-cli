@@ -57,7 +57,7 @@ pub(crate) enum ClusterCommand {
 
         /// Cluster identifier
         #[structopt(name = "cluster-id")]
-        id: String,
+        cluster_id: String,
     },
 
     /// List all clusters
