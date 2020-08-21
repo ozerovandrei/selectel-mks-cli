@@ -1,5 +1,6 @@
 use anyhow::bail;
 use anyhow::{Context, Result};
+use selectel_mks::cluster as mks_cluster;
 use selectel_mks::Client;
 use structopt::StructOpt;
 
@@ -22,6 +23,46 @@ fn main() -> Result<()> {
         conf::Resource::Cluster(conf::Cluster {
             command: conf::ClusterCommand::Get { output, cluster_id },
         }) => cluster::get(&client, &output, &cluster_id)?,
+
+        // cluster create
+        conf::Resource::Cluster(conf::Cluster {
+            command:
+                conf::ClusterCommand::Create {
+                    output,
+                    name,
+                    kube_version,
+                    region,
+                    network_id,
+                    subnet_id,
+                    maintenance_window_start,
+                    enable_autorepair,
+                    enable_patch_version_auto_upgrade,
+                    zonal,
+                },
+        }) => {
+            let mut opts = mks_cluster::schemas::CreateOpts::new(&name, &kube_version, &region);
+            if let Some(network_id) = network_id {
+                opts = opts.with_network_id(&network_id);
+            }
+            if let Some(subnet_id) = subnet_id {
+                opts = opts.with_subnet_id(&subnet_id);
+            }
+            if let Some(maintenance_window_start) = maintenance_window_start {
+                opts = opts.with_maintenance_window_start(&maintenance_window_start);
+            }
+            if let Some(enable_autorepair) = enable_autorepair {
+                opts = opts.with_enable_autorepair(enable_autorepair);
+            }
+            if let Some(enable_patch_version_auto_upgrade) = enable_patch_version_auto_upgrade {
+                opts =
+                    opts.with_enable_patch_version_auto_upgrade(enable_patch_version_auto_upgrade);
+            }
+            if let Some(zonal) = zonal {
+                opts = opts.with_zonal(zonal);
+            }
+
+            cluster::create(&client, &output, opts)?
+        }
 
         // kubeversion list
         conf::Resource::Kubeversion(conf::Kubeversion {

@@ -139,3 +139,21 @@ fn get_print_table(cluster: &cluster::schemas::Cluster) {
 
     println!("{}", table.render());
 }
+
+pub(crate) fn create(
+    client: &Client,
+    output: &str,
+    opts: cluster::schemas::CreateOpts,
+) -> Result<()> {
+    let cluster = client
+        .create_cluster(&opts)
+        .context("Failed to create cluster")?;
+
+    match output {
+        "table" => get_print_table(&cluster),
+        "json" => json::print_json(cluster)?,
+        _ => bail!("Unknown output format"),
+    };
+
+    Ok(())
+}
