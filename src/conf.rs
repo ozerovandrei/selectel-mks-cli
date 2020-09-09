@@ -145,8 +145,8 @@ pub(crate) struct Node {
 
 #[derive(Debug, StructOpt)]
 pub(crate) enum NodeCommand {
-    /// List cluster nodes in the nodegroup
-    List {
+    /// Get a cluster node in the nodegroup
+    Get {
         #[structopt(default_value = "table", short, long)]
         /// Output format, can be either of table or json
         output: String,
@@ -158,6 +158,10 @@ pub(crate) enum NodeCommand {
         /// Nodegroup identifier
         #[structopt(long)]
         nodegroup_id: String,
+
+        /// Node identifier
+        #[structopt(name = "node-id")]
+        node_id: String,
     },
 
     /// Reinstall single node
