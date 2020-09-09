@@ -107,6 +107,16 @@ fn main() -> Result<()> {
             command: conf::NodegroupCommand::List { output, cluster_id },
         }) => nodegroup::list(&client, &output, &cluster_id)?,
 
+        // nodegroup get
+        conf::Resource::Nodegroup(conf::Nodegroup {
+            command:
+                conf::NodegroupCommand::Get {
+                    output,
+                    cluster_id,
+                    nodegroup_id,
+                },
+        }) => nodegroup::get(&client, &output, &cluster_id, &nodegroup_id)?,
+
         // task get
         conf::Resource::Task(conf::Task {
             command:

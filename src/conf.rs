@@ -207,11 +207,11 @@ pub(crate) enum NodegroupCommand {
 
         /// Cluster identifier
         #[structopt(long)]
-        cluster: String,
+        cluster_id: String,
 
         /// Nodegroup identifier
         #[structopt(name = "nodegroup-id")]
-        nodegroup: String,
+        nodegroup_id: String,
     },
 
     /// Create a new nodegroup
