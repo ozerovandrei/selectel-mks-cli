@@ -25,7 +25,7 @@ jobs:
         run: cargo build --all --release && strip target/release/mks && mv target/release/mks target/release/mks_linux_amd64
 
       - name: Release
-        uses: softpops/action-gh-release@v1
+        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
@@ -51,7 +51,7 @@ jobs:
         run: cargo build --all --release && strip target/release/mks && mv target/release/mks target/release/mks_darwin
 
       - name: Release
-        uses: softpops/action-gh-release@v1
+        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
@@ -76,7 +76,7 @@ jobs:
         run: cargo build --all --release
 
       - name: Release
-        uses: softpops/action-gh-release@v1
+        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
