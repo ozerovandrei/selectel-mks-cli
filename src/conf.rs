@@ -216,21 +216,21 @@ pub(crate) enum NodegroupCommand {
 
     /// Create a new nodegroup
     Create {
-        #[structopt(default_value = "table", short, long)]
-        /// Output format, can be either of table or json
-        output: String,
-
         /// Cluster identifier
         #[structopt(long)]
-        cluster: String,
+        cluster_id: String,
 
         /// Count of nodes
         #[structopt(long)]
-        node_count: u32,
+        nodes_count: u32,
 
         /// Availability zone for all nodes in this nodegroup
         #[structopt(long)]
         availability_zone: String,
+
+        /// Use local volume for each node
+        #[structopt(long)]
+        local_volume: bool,
 
         /// Reference to a pre-created flavor, it can be omitted in most cases
         #[structopt(long)]
@@ -255,10 +255,6 @@ pub(crate) enum NodegroupCommand {
         /// flavor-id is set and volume is local
         #[structopt(long)]
         volume_type: Option<String>,
-
-        /// Use local volume for each node
-        #[structopt(long)]
-        local_volume: Option<bool>,
 
         /// Name of the SSH key that will be added to all nodes
         #[structopt(long)]

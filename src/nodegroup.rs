@@ -131,3 +131,15 @@ fn list_print_table(nodegroups: &[nodegroup::schemas::Nodegroup]) {
 
     println!("{}", table.render());
 }
+
+pub(crate) fn create(
+    client: &Client,
+    cluster_id: &str,
+    opts: nodegroup::schemas::CreateOpts,
+) -> Result<()> {
+    client
+        .create_nodegroup(&cluster_id, &opts)
+        .context("Failed to create nodegroup")?;
+
+    Ok(())
+}

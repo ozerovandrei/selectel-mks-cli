@@ -1,6 +1,7 @@
 use anyhow::bail;
 use anyhow::{Context, Result};
 use selectel_mks::cluster as mks_cluster;
+use selectel_mks::nodegroup as mks_nodegroup;
 use selectel_mks::Client;
 use structopt::StructOpt;
 
@@ -116,6 +117,53 @@ fn main() -> Result<()> {
                     nodegroup_id,
                 },
         }) => nodegroup::get(&client, &output, &cluster_id, &nodegroup_id)?,
+
+        // nodegroup create
+        conf::Resource::Nodegroup(conf::Nodegroup {
+            command:
+                conf::NodegroupCommand::Create {
+                    cluster_id,
+                    nodes_count,
+                    flavor_id,
+                    cpus,
+                    ram_mb,
+                    volume_gb,
+                    volume_type,
+                    local_volume,
+                    keypair_name,
+                    affinity_policy,
+                    availability_zone,
+                },
+        }) => {
+            let mut opts = mks_nodegroup::schemas::CreateOpts::new(
+                nodes_count,
+                local_volume,
+                &availability_zone,
+            );
+            if let Some(flavor_id) = flavor_id {
+                opts = opts.with_flavor_id(&flavor_id);
+            }
+            if let Some(cpus) = cpus {
+                opts = opts.with_cpus(cpus);
+            }
+            if let Some(ram_mb) = ram_mb {
+                opts = opts.with_ram_mb(ram_mb);
+            }
+            if let Some(volume_gb) = volume_gb {
+                opts = opts.with_volume_gb(volume_gb);
+            }
+            if let Some(volume_type) = volume_type {
+                opts = opts.with_volume_type(&volume_type);
+            }
+            if let Some(keypair_name) = keypair_name {
+                opts = opts.with_keypair_name(&keypair_name);
+            }
+            if let Some(affinity_policy) = affinity_policy {
+                opts = opts.with_affinity_policy(&affinity_policy);
+            }
+
+            nodegroup::create(&client, &cluster_id, opts)?
+        }
 
         // task get
         conf::Resource::Task(conf::Task {
