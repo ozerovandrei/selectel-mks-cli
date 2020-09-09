@@ -196,7 +196,7 @@ pub(crate) enum NodegroupCommand {
 
         /// Cluster identifier
         #[structopt(long)]
-        cluster: String,
+        cluster_id: String,
     },
 
     /// Get cluster nodegroup

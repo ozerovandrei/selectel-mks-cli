@@ -9,6 +9,7 @@ mod conf;
 mod cluster;
 mod kubeversion;
 mod node;
+mod nodegroup;
 mod task;
 
 pub(crate) mod json;
@@ -100,6 +101,11 @@ fn main() -> Result<()> {
                     node_id,
                 },
         }) => node::reinstall(&client, &cluster_id, &nodegroup_id, &node_id)?,
+
+        // nodegroup list
+        conf::Resource::Nodegroup(conf::Nodegroup {
+            command: conf::NodegroupCommand::List { output, cluster_id },
+        }) => nodegroup::list(&client, &output, &cluster_id)?,
 
         // task get
         conf::Resource::Task(conf::Task {
