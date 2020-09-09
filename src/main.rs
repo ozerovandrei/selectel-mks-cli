@@ -91,6 +91,16 @@ fn main() -> Result<()> {
                 },
         }) => node::get(&client, &output, &cluster_id, &nodegroup_id, &node_id)?,
 
+        // node reinstall
+        conf::Resource::Node(conf::Node {
+            command:
+                conf::NodeCommand::Reinstall {
+                    cluster_id,
+                    nodegroup_id,
+                    node_id,
+                },
+        }) => node::reinstall(&client, &cluster_id, &nodegroup_id, &node_id)?,
+
         // task get
         conf::Resource::Task(conf::Task {
             command:

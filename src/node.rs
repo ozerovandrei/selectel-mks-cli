@@ -69,3 +69,16 @@ fn get_print_table(node: &node::schemas::Node) {
 
     println!("{}", table.render());
 }
+
+pub(crate) fn reinstall(
+    client: &Client,
+    cluster_id: &str,
+    nodegroup_id: &str,
+    node_id: &str,
+) -> Result<()> {
+    client
+        .reinstall_node(cluster_id, nodegroup_id, node_id)
+        .context("Failed to reinstall node")?;
+
+    Ok(())
+}
