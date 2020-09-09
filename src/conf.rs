@@ -280,11 +280,11 @@ pub(crate) enum NodegroupCommand {
     Delete {
         /// Cluster identifier
         #[structopt(long)]
-        cluster: String,
+        cluster_id: String,
 
         /// Nodegroup identifier
         #[structopt(name = "nodegroup-id")]
-        nodegroup: String,
+        nodegroup_id: String,
     },
 }
 
