@@ -143,3 +143,11 @@ pub(crate) fn create(
 
     Ok(())
 }
+
+pub(crate) fn delete(client: &Client, cluster_id: &str, nodegroup_id: &str) -> Result<()> {
+    client
+        .delete_nodegroup(cluster_id, nodegroup_id)
+        .context("Failed to delete nodegroup")?;
+
+    Ok(())
+}

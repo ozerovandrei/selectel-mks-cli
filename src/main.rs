@@ -165,6 +165,15 @@ fn main() -> Result<()> {
             nodegroup::create(&client, &cluster_id, opts)?
         }
 
+        // nodegroup delete
+        conf::Resource::Nodegroup(conf::Nodegroup {
+            command:
+                conf::NodegroupCommand::Delete {
+                    cluster_id,
+                    nodegroup_id,
+                },
+        }) => nodegroup::delete(&client, &cluster_id, &nodegroup_id)?,
+
         // task get
         conf::Resource::Task(conf::Task {
             command:
