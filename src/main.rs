@@ -8,6 +8,7 @@ mod conf;
 
 mod cluster;
 mod kubeversion;
+mod node;
 mod task;
 
 pub(crate) mod json;
@@ -78,6 +79,17 @@ fn main() -> Result<()> {
         conf::Resource::Kubeversion(conf::Kubeversion {
             command: conf::KubeversionCommand::List { output },
         }) => kubeversion::list(&client, &output)?,
+
+        // node get
+        conf::Resource::Node(conf::Node {
+            command:
+                conf::NodeCommand::Get {
+                    output,
+                    cluster_id,
+                    nodegroup_id,
+                    node_id,
+                },
+        }) => node::get(&client, &output, &cluster_id, &nodegroup_id, &node_id)?,
 
         // task get
         conf::Resource::Task(conf::Task {
