@@ -1,4 +1,3 @@
-use anyhow::bail;
 use anyhow::{Context, Result};
 use selectel_mks::cluster as mks_cluster;
 use selectel_mks::nodegroup as mks_nodegroup;
@@ -165,6 +164,16 @@ fn main() -> Result<()> {
             nodegroup::create(&client, &cluster_id, opts)?
         }
 
+        // nodegroup set
+        conf::Resource::Nodegroup(conf::Nodegroup {
+            command:
+                conf::NodegroupCommand::Set {
+                    cluster_id,
+                    nodegroup_id,
+                    nodes_count,
+                },
+        }) => nodegroup::set(&client, &cluster_id, &nodegroup_id, nodes_count)?,
+
         // nodegroup delete
         conf::Resource::Nodegroup(conf::Nodegroup {
             command:
@@ -188,8 +197,6 @@ fn main() -> Result<()> {
         conf::Resource::Task(conf::Task {
             command: conf::TaskCommand::List { output, cluster_id },
         }) => task::list(&client, &output, &cluster_id)?,
-
-        _ => bail!("Unknown command"),
     };
 
     Ok(())

@@ -144,6 +144,22 @@ pub(crate) fn create(
     Ok(())
 }
 
+pub(crate) fn set(
+    client: &Client,
+    cluster_id: &str,
+    nodegroup_id: &str,
+    nodes_count: Option<u32>,
+) -> Result<()> {
+    if let Some(desired) = nodes_count {
+        let resize_opts = &nodegroup::schemas::ResizeOpts::new(desired);
+        client
+            .resize_nodegroup(cluster_id, nodegroup_id, resize_opts)
+            .context("Failed to resize nodegroup")?;
+    }
+
+    Ok(())
+}
+
 pub(crate) fn delete(client: &Client, cluster_id: &str, nodegroup_id: &str) -> Result<()> {
     client
         .delete_nodegroup(cluster_id, nodegroup_id)
