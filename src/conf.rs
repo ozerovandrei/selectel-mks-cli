@@ -269,11 +269,15 @@ pub(crate) enum NodegroupCommand {
     Set {
         /// Cluster identifier
         #[structopt(long)]
-        cluster: String,
+        cluster_id: String,
+
+        /// Nodegroup identifier
+        #[structopt(name = "nodegroup-id")]
+        nodegroup_id: String,
 
         /// Count of nodes
         #[structopt(long)]
-        node_count: Option<u32>,
+        nodes_count: Option<u32>,
     },
 
     /// Delete nodegroup
