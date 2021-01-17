@@ -2,7 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/selectel-mks-cli.svg)](https://crates.io/crates/selectel-mks-cli)
 [![Documentation](https://docs.rs/selectel-mks-cli/badge.svg)](https://docs.rs/selectel-mks-cli)
-![CI](https://github.com/ozerovandrei/selectel-mks-cli/workflows/CI/badge.svg?branch=master)
+![CI](https://github.com/ozerovandrei/selectel-mks-cli/workflows/CI/badge.svg?branch=main)
 
 CLI to the Selectel MKS V1 API.
 
